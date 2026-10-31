@@ -234,7 +234,7 @@ function iniciarArmado() {
   if (!conGsap) { renderArmado(.7); return; }
   renderArmado(0);
   ScrollTrigger.create({
-    trigger: '#look', start: 'top top', end: '+=240%', pin: true, scrub: true,
+    trigger: '#look', start: () => `top ${$('#cabecera').offsetHeight}px`, end: '+=240%', pin: true, scrub: true, invalidateOnRefresh: true,
     onUpdate: s => renderArmado(s.progress)
   });
 }
@@ -289,10 +289,21 @@ function iniciarPortfolio() {
 
 /* ============ CONSEJOS ============ */
 function renderNotas() {
-  const cont = $('#notas');
+  const cont = $('#notas'), filtro = $('#filtroNotas');
+  const temas = ['Todos', ...new Set(ARTICULOS.map(a => a.tag))];
+  temas.forEach((t, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = t; b.setAttribute('aria-pressed', String(i === 0));
+    b.addEventListener('click', () => {
+      $$('button', filtro).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      $$('.nota', cont).forEach(n => { n.hidden = i !== 0 && n.dataset.tag !== t; });
+    });
+    filtro.append(b);
+  });
+  filtro.hidden = temas.length <= 2;
   ARTICULOS.forEach((a, i) => {
     const art = document.createElement('article');
-    art.className = 'nota'; art.dataset.reveal = '';
+    art.className = 'nota'; art.dataset.reveal = ''; art.dataset.tag = a.tag;
     const tag = document.createElement('p'); tag.className = 'nota__tag'; tag.textContent = a.tag;
     const h = document.createElement('h3'); h.textContent = a.titulo;
     const r = document.createElement('p'); r.textContent = a.resumen;
@@ -395,7 +406,10 @@ function progresoLectura() {
 function menuActivo() {
   const enlaces = $$('.menu a');
   const io = new IntersectionObserver(es => es.forEach(en => {
-    if (en.isIntersecting) enlaces.forEach(a => a.classList.toggle('activo', a.dataset.sec === en.target.id));
+    if (!en.isIntersecting) return;
+    enlaces.forEach(a => a.classList.toggle('activo', a.dataset.sec === en.target.id));
+    const menu = $('.menu'), act = $('.menu a.activo');
+    if (act && menu.scrollWidth > menu.clientWidth) menu.scrollTo({ left: act.offsetLeft - menu.clientWidth / 2 + act.offsetWidth / 2, behavior: reducido ? 'auto' : 'smooth' });
   }), { rootMargin: '-45% 0px -50% 0px' });
   enlaces.forEach(a => { const s = document.getElementById(a.dataset.sec); if (s) io.observe(s); });
 }

@@ -94,7 +94,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .resultado__tipo{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ciruela);font-weight:500;margin-top:1.4rem}
 
 /* así se arma */
-.armado{min-height:100vh;display:flex;align-items:center;background:var(--fondo);border-top:1px solid var(--linea)}
+.armado{min-height:calc(100vh - var(--alto-cab,115px));min-height:calc(100svh - var(--alto-cab,115px));display:flex;align-items:center;background:var(--fondo);border-top:1px solid var(--linea)}
 .armado__interior{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;padding-block:2rem}
 .armado__lista{margin:1.8rem 0}
 .armado__lista li{padding:.9rem 0 .9rem 1.2rem;border-top:1px solid var(--linea);position:relative;color:rgba(0,9,20,.5);transition:color .3s}
@@ -140,7 +140,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .nota__tag{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--frambuesa);margin-bottom:.6rem}
 .nota h3{margin-bottom:.8rem}
 .nota__cuerpo{font-size:.92rem}
-.nota__cuerpo[hidden]{display:none}
+.nota__cuerpo[hidden],.nota[hidden]{display:none}
 .nota button{min-height:40px;padding:0;background:none;border:0;border-bottom:1px solid var(--ciruela);color:var(--ciruela);font:500 .7rem/1 'Montserrat',sans-serif;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;margin-top:.4rem}
 
 /* milena */
@@ -216,7 +216,16 @@ ul,ol{margin:0;padding:0;list-style:none}
   .armado__lista li.activa p{display:block}
   .armado__pista{display:none}
 }
-@media (max-width:640px){.galeria{grid-template-columns:repeat(2,1fr);gap:12px}.menu{gap:0 1rem}}
+@media (max-width:640px){
+  .galeria{grid-template-columns:repeat(2,1fr);gap:12px}
+  .cabecera{padding:.7rem 0 .2rem}
+  .logo{font-size:1.15rem;letter-spacing:.32em;padding-left:.32em}
+  .menu{position:relative;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;gap:0 1.2rem;padding:0 1rem;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 1rem,#000 calc(100% - 1.5rem),transparent)}
+  .menu::-webkit-scrollbar{display:none}
+  .menu a{white-space:nowrap}
+  html{scroll-padding-top:90px}
+  :root{--alto-cab:88px}
+}
 @media (pointer:coarse){.cursor{display:none}}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
