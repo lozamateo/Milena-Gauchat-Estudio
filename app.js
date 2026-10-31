@@ -2,7 +2,7 @@
 'use strict';
 
 /* ============ CONFIGURACIÓN (lo que hay que completar) ============ */
-const WA_NUMERO = '5490000000000'; // Reemplazar por el WhatsApp real de Milena, sin + ni espacios
+const WA_NUMERO = '5493624240260'; // WhatsApp de Milena (el de su bio de Instagram), sin + ni espacios
 
 // Reseñas: con url y anonKey vacíos se guardan solo en el navegador (modo prueba).
 // Para guardarlas de verdad, completá estos datos de Supabase (ver README).

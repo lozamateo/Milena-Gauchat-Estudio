@@ -34,7 +34,9 @@ ul,ol{margin:0;padding:0;list-style:none}
 .aviso p{margin:0;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
 .aviso a{color:var(--ciruela);font-weight:500;display:inline-block;padding:.5rem .25rem}
 .cabecera{position:sticky;top:0;z-index:50;background:rgba(253,251,248,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--linea);text-align:center;padding:1rem 1rem .4rem}
-.logo{display:inline-block;font-weight:200;font-size:clamp(1.3rem,3vw,1.9rem);letter-spacing:.42em;text-transform:uppercase;text-decoration:none;padding-left:.42em}
+.logo{display:inline-flex;align-items:center;gap:.9rem;font-weight:200;font-size:clamp(1.3rem,3vw,1.9rem);letter-spacing:.42em;text-transform:uppercase;text-decoration:none;padding-left:.42em}
+.logo__mg{width:40px;height:40px;border-radius:50%;flex:none}
+.pie__mg{width:56px;height:56px;border-radius:50%;margin:0 auto .9rem}
 .menu{display:flex;flex-wrap:wrap;justify-content:center;gap:0 1.6rem}
 .menu a{display:inline-flex;align-items:center;min-height:40px;font-size:.7rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
 .menu a:hover,.menu a.activo{color:var(--ciruela);border-color:var(--ciruela)}
@@ -219,7 +221,8 @@ ul,ol{margin:0;padding:0;list-style:none}
 @media (max-width:640px){
   .galeria{grid-template-columns:repeat(2,1fr);gap:12px}
   .cabecera{padding:.7rem 0 .2rem}
-  .logo{font-size:1.15rem;letter-spacing:.32em;padding-left:.32em}
+  .logo{font-size:1.15rem;letter-spacing:.32em;padding-left:.32em;gap:.6rem}
+  .logo__mg{width:30px;height:30px}
   .menu{position:relative;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;gap:0 1.2rem;padding:0 1rem;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 1rem,#000 calc(100% - 1.5rem),transparent)}
   .menu::-webkit-scrollbar{display:none}
   .menu a{white-space:nowrap}
