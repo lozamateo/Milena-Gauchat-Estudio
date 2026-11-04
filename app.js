@@ -116,8 +116,8 @@ function medioHTML(a) {
 
 /* ============ WHATSAPP ============ */
 function mensajeWA() {
-  if (!estado.estilo) return 'Hola Milena! Vi tu web y quiero pedir una prueba de maquillaje para mi casamiento.';
-  return `Hola Milena! Hice el test de tu web: me salió el estilo ${estado.estilo.tipo} (${estado.estilo.look}) y me parezco al avatar "${estado.avatar.nombre}". Quiero pedir una prueba de maquillaje para mi casamiento.`;
+  if (!estado.estilo) return 'Hola Milena! Vi tu web y quiero pedir una prueba de maquillaje para mi (evento).';
+  return `Hola Milena! Hice el test de tu web: me salió el estilo ${estado.estilo.tipo} (${estado.estilo.look}) y me parezco al avatar "${estado.avatar.nombre}". Quiero pedir una prueba de maquillaje para mi (evento).`;
 }
 function actualizarWA() {
   const url = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(mensajeWA())}`;
@@ -150,14 +150,11 @@ function movimientoAvatar() {
     const v = $('video', stage);
     if (v && v.duration) { v.currentTime = px * v.duration; return; }
     if (reducido) return;
-    stage.style.setProperty('--ry', ((px - .5) * 10).toFixed(2) + 'deg');
-    stage.style.setProperty('--rx', ((.5 - py) * 6).toFixed(2) + 'deg');
     stage.style.setProperty('--lx', (px * 100).toFixed(1) + '%');
     stage.style.setProperty('--ly', (py * 100).toFixed(1) + '%');
   };
   stage.addEventListener('pointermove', e => { punto = { x: e.clientX, y: e.clientY }; if (!raf) raf = requestAnimationFrame(aplicar); });
   stage.addEventListener('pointerleave', () => {
-    stage.style.setProperty('--ry', '0deg'); stage.style.setProperty('--rx', '0deg');
     stage.style.setProperty('--lx', '50%'); stage.style.setProperty('--ly', '35%');
   });
 }
@@ -216,27 +213,9 @@ function montarArmado() {
   $$('#cara .capa').forEach(c => { c.innerHTML = html; });
   $$('#cara video').forEach(v => { v.pause(); v.currentTime = v.duration ? v.duration / 2 : 0; });
 }
-function renderArmado(p) {
-  const capas = $$('#cara .capa:not(.capa--base)');
-  const items = $$('#armadoLista li');
-  const activa = Math.min(4, Math.floor(p * 5));
-  const sep = clamp(p / 0.22, 0, 1);
-  $('#cara').style.transform = `rotateY(${(-28 + 56 * p).toFixed(1)}deg) rotateX(-4deg)`;
-  capas.forEach((c, i) => {
-    const z = sep * ((i + 1) * 28 + (i === activa ? 22 : 0));
-    c.style.transform = `translateZ(${z.toFixed(1)}px)`;
-    c.style.opacity = sep > .3 && i !== activa ? '.6' : '1';
-  });
-  items.forEach((li, i) => li.classList.toggle('activa', i === activa));
-}
+// La imagen queda quieta: sin giro ni capas que se separen al hacer scroll.
 function iniciarArmado() {
   montarArmado();
-  if (!conGsap) { renderArmado(.7); return; }
-  renderArmado(0);
-  ScrollTrigger.create({
-    trigger: '#look', start: () => `top ${$('#cabecera').offsetHeight}px`, end: '+=240%', pin: true, scrub: true, invalidateOnRefresh: true,
-    onUpdate: s => renderArmado(s.progress)
-  });
 }
 
 /* ============ PORTFOLIO ============ */

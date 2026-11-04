@@ -53,7 +53,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .arco{position:relative;width:min(380px,78vw);margin:0 18px 18px 0}
 .arco::before{content:"";position:absolute;inset:0;transform:translate(18px,18px);border:1px solid var(--ciruela);border-radius:999px 999px 0 0}
 .arco-forma{position:relative;aspect-ratio:4/5;border-radius:999px 999px 0 0;overflow:hidden;background:var(--superficie);touch-action:pan-y;--rx:0deg;--ry:0deg;--lx:50%;--ly:35%}
-.arco-forma .medio{position:absolute;inset:0;transform:perspective(900px) rotateY(var(--ry)) rotateX(var(--rx)) scale(1.04);transition:transform .35s ease-out}
+.arco-forma .medio{position:absolute;inset:0}
 .arco-forma::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--lx) var(--ly),rgba(255,255,255,.35),transparent 45%);pointer-events:none}
 .medio img,.medio video,.medio svg{width:100%;height:100%;object-fit:cover}
 .etiqueta-ph{position:absolute;left:0;right:0;bottom:12%;text-align:center;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ciruela);z-index:2;margin:0}
@@ -99,19 +99,19 @@ ul,ol{margin:0;padding:0;list-style:none}
 .armado{min-height:calc(100vh - var(--alto-cab,115px));min-height:calc(100svh - var(--alto-cab,115px));display:flex;align-items:center;background:var(--fondo);border-top:1px solid var(--linea)}
 .armado__interior{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;padding-block:2rem}
 .armado__lista{margin:1.8rem 0}
-.armado__lista li{padding:.9rem 0 .9rem 1.2rem;border-top:1px solid var(--linea);position:relative;color:rgba(0,9,20,.5);transition:color .3s}
-.armado__lista li::before{content:"";position:absolute;left:0;top:1.5rem;width:6px;height:6px;border-radius:50%;background:var(--linea);transition:background .3s}
-.armado__lista strong{display:block;font-weight:400;font-size:1.05rem}
+.armado__lista li{padding:.9rem 0 .9rem 1.2rem;border-top:1px solid var(--linea);position:relative;}
+.armado__lista li::before{content:"";position:absolute;left:0;top:1.5rem;width:6px;height:6px;border-radius:50%;background:var(--ciruela)}
+.armado__lista strong{display:block;font-weight:400;font-size:1.05rem;color:var(--ciruela)}
 .armado__lista p{margin:.2rem 0 0;font-size:.9rem}
 .armado__lista li.activa{color:var(--texto)}
 .armado__lista li.activa strong{color:var(--ciruela)}
 .armado__lista li.activa::before{background:var(--ciruela)}
 .armado__pista{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--frambuesa)}
-.escenario{perspective:1200px;display:flex;justify-content:center}
-.cara{position:relative;width:min(360px,74vw);aspect-ratio:4/5;transform-style:preserve-3d;transform:rotateY(-12deg) rotateX(-3deg)}
+.escenario{display:flex;justify-content:center}
+.cara{position:relative;width:min(360px,74vw);aspect-ratio:4/5;}
 .capa{position:absolute;inset:0;transition:opacity .3s}
 .capa .medio{position:absolute;inset:0}
-.capa--base{opacity:.4}
+.capa:not(.capa--base){display:none}
 .capa--piel{-webkit-mask-image:radial-gradient(ellipse 18% 18.5% at 50% 45%,#000 96%,transparent 100%);mask-image:radial-gradient(ellipse 18% 18.5% at 50% 45%,#000 96%,transparent 100%)}
 .capa--cejas{-webkit-mask-image:radial-gradient(ellipse 7% 2.4% at 42.5% 35%,#000 90%,transparent 100%),radial-gradient(ellipse 7% 2.4% at 57.5% 35%,#000 90%,transparent 100%);mask-image:radial-gradient(ellipse 7% 2.4% at 42.5% 35%,#000 90%,transparent 100%),radial-gradient(ellipse 7% 2.4% at 57.5% 35%,#000 90%,transparent 100%)}
 .capa--ojos{-webkit-mask-image:radial-gradient(ellipse 6.5% 3% at 42.5% 41%,#000 90%,transparent 100%),radial-gradient(ellipse 6.5% 3% at 57.5% 41%,#000 90%,transparent 100%);mask-image:radial-gradient(ellipse 6.5% 3% at 42.5% 41%,#000 90%,transparent 100%),radial-gradient(ellipse 6.5% 3% at 57.5% 41%,#000 90%,transparent 100%)}
@@ -214,8 +214,6 @@ ul,ol{margin:0;padding:0;list-style:none}
   .armado__lista{margin:1rem 0 .6rem}
   .armado__lista li{padding:.5rem 0 .5rem 1rem}
   .armado__lista li::before{top:1rem}
-  .armado__lista p{display:none}
-  .armado__lista li.activa p{display:block}
   .armado__pista{display:none}
 }
 @media (max-width:640px){
