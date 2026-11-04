@@ -92,7 +92,38 @@ const conGsap = !!(window.gsap && window.ScrollTrigger) && !reducido;
 if (!conGsap) document.documentElement.classList.add('sin-anim');
 if (conGsap) gsap.registerPlugin(ScrollTrigger);
 
-const estado = { avatar: AVATARES[0], estilo: null, ocasion: 'novias', tipo: 'todas' };
+/* Colores para jugar en "Así se arma tu look". */
+const PALETAS = {
+  piel: [
+    { nombre: 'muy clara', color: '#F6DDCB' }, { nombre: 'clara', color: '#F1D3BE' },
+    { nombre: 'media', color: '#E0B48F' }, { nombre: 'trigueña', color: '#C9935F' },
+    { nombre: 'morena', color: '#8D5A3C' }, { nombre: 'oscura', color: '#5E3A26' }
+  ],
+  cejas: [
+    { nombre: 'negras', color: '#22160F' }, { nombre: 'castaño oscuro', color: '#3B2619' },
+    { nombre: 'castañas', color: '#5A3A29' }, { nombre: 'castaño claro', color: '#8A6248' },
+    { nombre: 'rubias', color: '#B89263' }, { nombre: 'cobrizas', color: '#8E3B1E' }
+  ],
+  ojos: [
+    { nombre: 'natural', color: '#E3C3AE' }, { nombre: 'rosada', color: '#D9A4A8' },
+    { nombre: 'tierra', color: '#A0694B' }, { nombre: 'bronce', color: '#9C6B3C' },
+    { nombre: 'ciruela', color: '#6F0936' }, { nombre: 'ahumada', color: '#3E3A40' }
+  ],
+  mejillas: [
+    { nombre: 'durazno', color: '#EBA58E' }, { nombre: 'rosa', color: '#D9A4A8' },
+    { nombre: 'terracota', color: '#C47A63' }, { nombre: 'frambuesa', color: '#B83254' }
+  ],
+  labios: [
+    { nombre: 'nude', color: '#C48E80' }, { nombre: 'rosa', color: '#D47784' },
+    { nombre: 'frambuesa', color: '#B83254' }, { nombre: 'rojo', color: '#A3172B' },
+    { nombre: 'ciruela', color: '#6F0936' }
+  ]
+};
+const PARTES = ['piel', 'cejas', 'ojos', 'mejillas', 'labios'];
+const PARTE_TXT = { piel: 'piel', cejas: 'cejas', ojos: 'sombras', mejillas: 'rubor', labios: 'labios' };
+const LOOK_INICIAL = { ojos: 0, mejillas: 1, labios: 0 };
+
+const estado = { avatar: AVATARES[0], estilo: null, ocasion: 'novias', tipo: 'todas', look: {}, tocadas: new Set() };
 
 function siluetaSVG(a) {
   return `<svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -115,9 +146,14 @@ function medioHTML(a) {
 }
 
 /* ============ WHATSAPP ============ */
+function resumenColores() {
+  const elegidas = PARTES.filter(p => estado.tocadas.has(p));
+  if (!elegidas.length) return '';
+  return ` En la web probé estos colores: ${elegidas.map(p => `${PARTE_TXT[p]}: ${PALETAS[p][estado.look[p]].nombre}`).join(', ')}.`;
+}
 function mensajeWA() {
-  if (!estado.estilo) return 'Hola Milena! Vi tu web y quiero pedir una prueba de maquillaje para mi (evento).';
-  return `Hola Milena! Hice el test de tu web: me salió el estilo ${estado.estilo.tipo} (${estado.estilo.look}) y me parezco al avatar "${estado.avatar.nombre}". Quiero pedir una prueba de maquillaje para mi (evento).`;
+  if (!estado.estilo) return `Hola Milena! Vi tu web y quiero pedir una prueba de maquillaje para mi (evento).${resumenColores()}`;
+  return `Hola Milena! Hice el test de tu web: me salió el estilo ${estado.estilo.tipo} (${estado.estilo.look}) y me parezco al avatar "${estado.avatar.nombre}".${resumenColores()} Quiero pedir una prueba de maquillaje para mi (evento).`;
 }
 function actualizarWA() {
   const url = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(mensajeWA())}`;
@@ -208,13 +244,90 @@ function mostrarResultado(e) {
 }
 
 /* ============ ASÍ SE ARMA TU LOOK ============ */
-function montarArmado() {
-  const html = medioHTML(estado.avatar);
-  $$('#cara .capa').forEach(c => { c.innerHTML = html; });
-  $$('#cara video').forEach(v => { v.pause(); v.currentTime = v.duration ? v.duration / 2 : 0; });
+// La cara queda quieta; lo que cambia son los colores que elige cada novia.
+function caraSVG() {
+  return `<svg class="cara-svg" viewBox="0 0 400 500" role="img" aria-label="Ilustración de una cara con los colores que elegiste">
+    <rect width="400" height="500" fill="#F3EAE5"/>
+    <ellipse cx="200" cy="215" rx="98" ry="122" style="fill:var(--c-pelo)"/>
+    <g style="fill:var(--c-piel)">
+      <path d="M70 500c0-95 55-135 130-135s130 40 130 135z"/>
+      <rect x="170" y="300" width="60" height="80"/>
+      <ellipse cx="200" cy="225" rx="70" ry="90"/>
+    </g>
+    <g style="fill:var(--c-ojos)" opacity=".8">
+      <ellipse cx="170" cy="199" rx="19" ry="10"/><ellipse cx="230" cy="199" rx="19" ry="10"/>
+    </g>
+    <ellipse cx="170" cy="205" rx="10" ry="5" fill="#fff"/><ellipse cx="230" cy="205" rx="10" ry="5" fill="#fff"/>
+    <circle cx="170" cy="205" r="3.5" fill="#3a2a22"/><circle cx="230" cy="205" r="3.5" fill="#3a2a22"/>
+    <path d="M152 172q16-10 34-2M214 170q18-8 34 2" style="stroke:var(--c-cejas)" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <g style="fill:var(--c-mejillas)" opacity=".55">
+      <ellipse cx="150" cy="245" rx="17" ry="12"/><ellipse cx="250" cy="245" rx="17" ry="12"/>
+    </g>
+    <path d="M178 272q11-8 22-2q11-6 22 2q-11 13-22 13q-11 0-22-13z" style="fill:var(--c-labios)"/>
+  </svg>`;
 }
-// La imagen queda quieta: sin giro ni capas que se separen al hacer scroll.
+function cercano(lista, hex) {
+  const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const [r, g, b] = rgb(hex);
+  let mejor = 0, dist = Infinity;
+  lista.forEach((t, i) => {
+    const [r2, g2, b2] = rgb(t.color);
+    const d = (r - r2) ** 2 + (g - g2) ** 2 + (b - b2) ** 2;
+    if (d < dist) { dist = d; mejor = i; }
+  });
+  return mejor;
+}
+// Piel y cejas arrancan parecidas al avatar elegido; el maquillaje, en tonos suaves.
+function lookDelAvatar() {
+  const a = estado.avatar;
+  if (!estado.tocadas.has('piel')) estado.look.piel = cercano(PALETAS.piel, a.piel);
+  if (!estado.tocadas.has('cejas')) estado.look.cejas = cercano(PALETAS.cejas, a.pelo);
+  Object.entries(LOOK_INICIAL).forEach(([p, i]) => { if (!estado.tocadas.has(p)) estado.look[p] = i; });
+}
+function aplicarLook() {
+  const cara = $('#cara');
+  cara.style.setProperty('--c-pelo', estado.avatar.pelo);
+  PARTES.forEach(p => {
+    const t = PALETAS[p][estado.look[p]];
+    cara.style.setProperty(`--c-${p}`, t.color);
+    const li = $(`#armadoLista li[data-parte="${p}"]`);
+    $('.armado__elegido', li).textContent = t.nombre;
+    $$('.tono', li).forEach((b, i) => b.setAttribute('aria-pressed', String(i === estado.look[p])));
+  });
+  $('#armadoReset').hidden = !estado.tocadas.size;
+}
+function montarArmado() {
+  lookDelAvatar();
+  aplicarLook();
+}
 function iniciarArmado() {
+  $('#cara').innerHTML = caraSVG();
+  PARTES.forEach(p => {
+    const li = $(`#armadoLista li[data-parte="${p}"]`);
+    const fila = document.createElement('div');
+    fila.className = 'tonos';
+    fila.setAttribute('role', 'group');
+    fila.setAttribute('aria-label', `Color de ${PARTE_TXT[p]}`);
+    PALETAS[p].forEach((t, i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'tono';
+      b.title = t.nombre;
+      b.setAttribute('aria-label', `${PARTE_TXT[p]} ${t.nombre}`);
+      b.style.setProperty('--c', t.color);
+      b.innerHTML = '<span></span>';
+      b.addEventListener('click', () => {
+        estado.look[p] = i;
+        estado.tocadas.add(p);
+        aplicarLook(); actualizarWA();
+      });
+      fila.append(b);
+    });
+    li.append(fila);
+  });
+  $('#armadoReset').addEventListener('click', () => {
+    estado.tocadas.clear();
+    montarArmado(); actualizarWA();
+  });
   montarArmado();
 }
 
