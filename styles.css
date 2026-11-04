@@ -162,7 +162,13 @@ button.enlace{background:none;border-top:0;border-left:0;border-right:0;color:va
 .servicios li{font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;padding:.3rem 0;border-bottom:1px solid var(--empolvado)}
 
 /* reseñas */
-.resenas__promedio{margin-top:.8rem;color:var(--ciruela);font-weight:400}
+.resenas__promedio{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem;margin-top:1.2rem;color:var(--ciruela)}
+.resenas__promedio:empty{display:none}
+.promedio__num{font-size:clamp(2.4rem,5vw,3.4rem);font-weight:200;line-height:1;letter-spacing:-.02em}
+.promedio__estrellas{position:relative;font-size:1.4rem;letter-spacing:.12em;line-height:1;color:rgba(0,9,20,.16)}
+.promedio__estrellas::before{content:"★★★★★"}
+.promedio__estrellas::after{content:"★★★★★";position:absolute;left:0;top:0;width:var(--p);overflow:hidden;white-space:nowrap;color:var(--frambuesa)}
+.promedio__txt{font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase}
 .resenas__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:3rem}
 .form{display:flex;flex-direction:column;gap:1.2rem}
 .campo{display:flex;flex-direction:column;gap:.4rem;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
@@ -181,6 +187,7 @@ button.enlace{background:none;border-top:0;border-left:0;border-right:0;color:va
 .resena{padding:1.2rem 0;border-top:1px solid var(--linea)}
 .resena__estrellas{color:var(--frambuesa);letter-spacing:.12em}
 .resena__nombre{font-weight:500;font-size:.85rem;margin:.2rem 0 .4rem}
+.resena__fecha{font-weight:300;color:rgba(0,9,20,.55)}
 .resena__texto{margin:0;font-size:.95rem;overflow-wrap:anywhere}
 .vacio{font-size:.95rem;color:rgba(0,9,20,.6)}
 
