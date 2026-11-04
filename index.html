@@ -101,23 +101,18 @@
     <div class="armado__texto">
       <p class="eyebrow">Así se arma tu look</p>
       <h2 id="armadoTitulo">Capa por capa</h2>
+      <p class="armado__bajada">Tocá los colores y probá cómo te imaginás. Es un juego para inspirarte: el look real lo arman juntas en la prueba.</p>
       <ul class="armado__lista" id="armadoLista">
-        <li><strong>Piel</strong><p>Preparación y base, el lienzo sobre el que se construye todo.</p></li>
-        <li><strong>Cejas</strong><p>El perfilado de cejas es el servicio que más le piden a Milena.</p></li>
-        <li><strong>Ojos</strong><p>Sombras, delineado y pestañas: acá se define la mirada.</p></li>
-        <li><strong>Mejillas</strong><p>El rubor que le da vida a la piel.</p></li>
-        <li><strong>Labios</strong><p>El toque final, a tu estilo.</p></li>
+        <li data-parte="piel"><strong>Piel <span class="armado__elegido"></span></strong><p>Preparación y base, el lienzo sobre el que se construye todo.</p></li>
+        <li data-parte="cejas"><strong>Cejas <span class="armado__elegido"></span></strong><p>El perfilado de cejas es el servicio que más le piden a Milena.</p></li>
+        <li data-parte="ojos"><strong>Ojos <span class="armado__elegido"></span></strong><p>Sombras, delineado y pestañas: acá se define la mirada.</p></li>
+        <li data-parte="mejillas"><strong>Mejillas <span class="armado__elegido"></span></strong><p>El rubor que le da vida a la piel.</p></li>
+        <li data-parte="labios"><strong>Labios <span class="armado__elegido"></span></strong><p>El toque final, a tu estilo.</p></li>
       </ul>
+      <button type="button" class="enlace" id="armadoReset">Volver a los colores iniciales</button>
     </div>
-    <div class="escenario" aria-hidden="true">
-      <div class="cara" id="cara">
-        <div class="capa capa--base"></div>
-        <div class="capa capa--piel"></div>
-        <div class="capa capa--cejas"></div>
-        <div class="capa capa--ojos"></div>
-        <div class="capa capa--mejillas"></div>
-        <div class="capa capa--labios"></div>
-      </div>
+    <div class="escenario">
+      <div class="cara" id="cara"></div>
     </div>
   </div>
 </section>
