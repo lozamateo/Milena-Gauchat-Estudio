@@ -10,11 +10,15 @@ Hecho con HTML, CSS y JavaScript simples, más GSAP y ScrollTrigger desde cdnjs.
 - `styles.css`: estilos.
 - `app.js`: interacciones. Arriba de todo están los datos que hay que completar.
 
+## Ya cargado
+
+- WhatsApp de Milena: `5493624240260` (el de su bio de Instagram), en la constante `WA_NUMERO` de `app.js`.
+- Logo MG: `img/logo-mg.png` (sacado de su perfil, 150 px). Conviene pedirle el archivo original en alta calidad y reemplazarlo con el mismo nombre.
+
 ## Qué falta completar (todo en `app.js`)
 
 | Qué | Dónde |
 | --- | --- |
-| WhatsApp de Milena (sin `+` ni espacios, por ejemplo `5493624123456`) | constante `WA_NUMERO` |
 | Fotos o clips de los avatares | arreglo `AVATARES`, campos `foto` y `video` |
 | Fotos del portfolio, nombres y años | arreglo `TRABAJOS`, campos `archivo`, `nombre` y `anio` |
 | Retrato de Milena | constante `RETRATO` |
