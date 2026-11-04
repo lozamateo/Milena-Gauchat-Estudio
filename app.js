@@ -517,16 +517,29 @@ async function pintarResenas() {
   cont.innerHTML = '';
   if (!lista.length) {
     prom.textContent = '';
-    cont.innerHTML = '<p class="vacio">Todavía no hay reseñas. Si Milena te maquilló, contanos cómo fue.</p>';
+    cont.innerHTML = '<p class="vacio">Todavía no hay reseñas. Si Milena te maquilló, contanos tu experiencia.</p>';
     return;
   }
   const media = lista.reduce((s, x) => s + Number(x.estrellas), 0) / lista.length;
-  prom.textContent = `${media.toFixed(1).replace('.', ',')} de 5 · ${lista.length} ${lista.length === 1 ? 'reseña' : 'reseñas'}`;
+  const num = media.toFixed(1).replace('.', ',');
+  const cant = `${lista.length} ${lista.length === 1 ? 'reseña' : 'reseñas'}`;
+  prom.innerHTML = '';
+  prom.setAttribute('aria-label', `Promedio ${num} de 5, ${cant}`);
+  const pn = document.createElement('span'); pn.className = 'promedio__num'; pn.textContent = num;
+  const pe = document.createElement('span'); pe.className = 'promedio__estrellas'; pe.style.setProperty('--p', `${(media / 5 * 100).toFixed(1)}%`);
+  pe.setAttribute('aria-hidden', 'true');
+  const pt = document.createElement('span'); pt.className = 'promedio__txt'; pt.textContent = `de 5 · ${cant}`;
+  prom.append(pn, pe, pt);
   lista.forEach(x => {
     const d = document.createElement('div'); d.className = 'resena';
     const e = document.createElement('div'); e.className = 'resena__estrellas'; e.setAttribute('aria-label', `${x.estrellas} de 5 estrellas`);
     e.textContent = '★'.repeat(x.estrellas) + '☆'.repeat(5 - x.estrellas);
     const n = document.createElement('p'); n.className = 'resena__nombre'; n.textContent = x.nombre;
+    if (x.creada) {
+      const f = document.createElement('span'); f.className = 'resena__fecha';
+      f.textContent = new Date(x.creada).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+      n.append(' · ', f);
+    }
     const t = document.createElement('p'); t.className = 'resena__texto'; t.textContent = x.comentario;
     d.append(e, n, t); cont.append(d);
   });
