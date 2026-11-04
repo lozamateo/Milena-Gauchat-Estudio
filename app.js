@@ -125,24 +125,109 @@ const LOOK_INICIAL = { ojos: 0, mejillas: 1, labios: 0 };
 
 const estado = { avatar: AVATARES[0], estilo: null, ocasion: 'novias', tipo: 'todas', look: {}, tocadas: new Set() };
 
-function siluetaSVG(a) {
-  return `<svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <rect width="400" height="500" fill="#F3EAE5"/>
-    <ellipse cx="200" cy="215" rx="98" ry="122" fill="${a.pelo}"/>
-    <path d="M70 500c0-95 55-135 130-135s130 40 130 135z" fill="${a.piel}"/>
-    <rect x="170" y="300" width="60" height="80" fill="${a.piel}"/>
-    <ellipse cx="200" cy="225" rx="70" ry="90" fill="${a.piel}"/>
-    <path d="M165 172q5-6 15 0M220 172q5-6 15 0" stroke="${a.pelo}" stroke-width="6" fill="none" stroke-linecap="round"/>
-    <ellipse cx="170" cy="205" rx="10" ry="5" fill="#fff" opacity=".85"/><ellipse cx="230" cy="205" rx="10" ry="5" fill="#fff" opacity=".85"/>
-    <circle cx="170" cy="205" r="3.5" fill="#3a2a22"/><circle cx="230" cy="205" r="3.5" fill="#3a2a22"/>
-    <ellipse cx="150" cy="245" rx="16" ry="12" fill="#D9A4A8" opacity=".5"/><ellipse cx="250" cy="245" rx="16" ry="12" fill="#D9A4A8" opacity=".5"/>
-    <ellipse cx="200" cy="275" rx="18" ry="7" fill="#B83254" opacity=".7"/>
+// Ilustración de la novia. Los colores vienen de variables CSS (--c-piel, --c-labios, etc.),
+// así la misma cara sirve para la portada y para "Así se arma tu look".
+let caraN = 0;
+function ojoSVG(cx, f, id) {
+  // f = -1 ojo izquierdo, 1 ojo derecho (el rabillo va hacia afuera)
+  const x = d => (cx + d * f).toFixed(1);
+  const almendra = `M${x(-17)} 213 Q${cx} 201 ${x(18)} 211 Q${cx} 222 ${x(-17)} 213Z`;
+  return `
+    <path d="M${x(-20)} 212 Q${x(-16)} 196 ${cx} 194 Q${x(17)} 195 ${x(22)} 208 Q${cx} 199 ${x(-20)} 212Z" style="fill:var(--c-ojos)" opacity=".85"/>
+    <path d="M${x(-15)} 205 Q${cx} 194 ${x(17)} 204" stroke="#000" stroke-opacity=".16" stroke-width="1.2" fill="none"/>
+    <g class="parpado">
+      <clipPath id="${id}"><path d="${almendra}"/></clipPath>
+      <path d="${almendra}" fill="#FBF7F4"/>
+      <g clip-path="url(#${id})"><g class="iris">
+        <circle cx="${cx}" cy="211.5" r="7.2" fill="#5A3B28"/>
+        <circle cx="${cx}" cy="211.5" r="7.2" fill="none" stroke="#2E1D13" stroke-width="1.2"/>
+        <circle cx="${cx}" cy="211.5" r="3.2" fill="#1A100B"/>
+        <circle cx="${(cx + 2.4).toFixed(1)}" cy="209.2" r="1.7" fill="#fff" opacity=".9"/>
+      </g></g>
+      <path d="M${x(-18)} 213 Q${cx} 199.5 ${x(19)} 210.5" stroke="#24150F" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <path d="M${x(17)} 210.8Q${x(22)} 208.5 ${x(25.5)} 204.5" stroke="#24150F" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </g>
+    <path d="M${x(-22)} 196 Q${x(2)} 179 ${x(26)} 188 Q${x(4)} 184 ${x(-22)} 199.5Z" style="fill:var(--c-cejas)"/>`;
+}
+function caraSVG(estilo = '') {
+  const n = ++caraN, id = k => `c${n}-${k}`;
+  return `<svg class="cara-svg" viewBox="0 0 400 500" style="${estilo}" role="img" aria-label="Ilustración de una novia con los colores que elegiste">
+    <defs>
+      <radialGradient id="${id('fondo')}" cx="50%" cy="38%" r="75%"><stop offset="0" stop-color="#FBF5F1"/><stop offset="1" stop-color="#EBDCD4"/></radialGradient>
+      <radialGradient id="${id('sombra')}" cx="50%" cy="40%" r="62%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></radialGradient>
+      <linearGradient id="${id('pelo')}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".12"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient>
+      <radialGradient id="${id('rubor')}"><stop offset="0" style="stop-color:var(--c-mejillas)" stop-opacity=".7"/><stop offset="1" style="stop-color:var(--c-mejillas)" stop-opacity="0"/></radialGradient>
+    </defs>
+    <rect width="400" height="500" fill="url(#${id('fondo')})"/>
+
+    <path d="M200 90C118 90 92 158 98 240C102 320 80 392 92 452L308 452C320 392 298 320 302 240C308 158 282 90 200 90Z" style="fill:var(--c-pelo)"/>
+    <path d="M200 90C118 90 92 158 98 240C102 320 80 392 92 452L308 452C320 392 298 320 302 240C308 158 282 90 200 90Z" fill="url(#${id('pelo')})"/>
+
+    <g style="fill:var(--c-piel)">
+      <path d="M58 500C62 424 118 384 172 368Q200 378 228 368C282 384 338 424 342 500Z"/>
+      <path d="M171 286L171 386L229 386L229 286Z"/>
+    </g>
+    <path d="M171 296Q200 336 229 296L229 318Q200 344 171 318Z" fill="#000" opacity=".1"/>
+    <path d="M150 404Q176 396 192 404M208 404Q224 396 250 404" stroke="#000" stroke-opacity=".1" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M70 500C84 462 136 446 200 450C264 446 316 462 330 500Z" fill="#FFFFFF"/>
+    <path d="M70 500C84 462 136 446 200 450C264 446 316 462 330 500" stroke="#000" stroke-opacity=".08" stroke-width="1.5" fill="none"/>
+
+    <g style="fill:var(--c-piel)">
+      <ellipse cx="134" cy="224" rx="10" ry="19"/><ellipse cx="266" cy="224" rx="10" ry="19"/>
+      <path d="M200 122C152 122 133 160 133 212C133 262 157 306 200 321C243 306 267 262 267 212C267 160 248 122 200 122Z"/>
+    </g>
+    <path d="M200 122C152 122 133 160 133 212C133 262 157 306 200 321C243 306 267 262 267 212C267 160 248 122 200 122Z" fill="url(#${id('sombra')})"/>
+    <circle cx="134" cy="244" r="2.4" fill="#fff" opacity=".85"/><circle cx="266" cy="244" r="2.4" fill="#fff" opacity=".85"/>
+
+    <ellipse cx="154" cy="252" rx="24" ry="16" fill="url(#${id('rubor')})"/>
+    <ellipse cx="246" cy="252" rx="24" ry="16" fill="url(#${id('rubor')})"/>
+
+    ${ojoSVG(168, -1, id('ojoI'))}
+    ${ojoSVG(232, 1, id('ojoD'))}
+
+    <path d="M196 222Q193 246 186 257Q192 264 200 262Q208 264 214 257" stroke="#000" stroke-opacity=".11" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M202 224Q204 240 204 250" stroke="#fff" stroke-opacity=".3" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="192" cy="259" rx="3.2" ry="1.7" fill="#000" opacity=".22"/><ellipse cx="208" cy="259" rx="3.2" ry="1.7" fill="#000" opacity=".22"/>
+
+    <g style="fill:var(--c-labios)">
+      <path d="M175 285Q186 276 194 278Q200 274 206 278Q214 276 225 285Q200 289 175 285Z"/>
+      <path d="M175 285Q200 291 225 285Q215 301 200 302Q185 301 175 285Z"/>
+    </g>
+    <path d="M175 285Q186 276 194 278Q200 274 206 278Q214 276 225 285Q200 289 175 285Z" fill="#000" opacity=".1"/>
+    <path d="M177 285Q200 290 223 285" stroke="#000" stroke-opacity=".3" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="200" cy="294" rx="8" ry="2.4" fill="#fff" opacity=".28"/>
+
+    <path d="M200 102C148 102 124 142 127 204C140 162 172 140 216 133C242 129 262 150 271 188C274 142 250 102 200 102Z" style="fill:var(--c-pelo)"/>
+    <path d="M200 102C148 102 124 142 127 204C140 162 172 140 216 133C242 129 262 150 271 188C274 142 250 102 200 102Z" fill="url(#${id('pelo')})"/>
+    <path d="M160 122Q192 108 232 116" stroke="#fff" stroke-opacity=".18" stroke-width="5" fill="none" stroke-linecap="round"/>
   </svg>`;
+}
+// Colores con los que arranca la ilustración de la portada para cada avatar.
+function estiloAvatar(a) {
+  return `--c-piel:${a.piel};--c-pelo:${a.pelo};--c-cejas:${PALETAS.cejas[cercano(PALETAS.cejas, a.pelo)].color};` +
+    `--c-ojos:${PALETAS.ojos[0].color};--c-mejillas:${PALETAS.mejillas[1].color};--c-labios:${PALETAS.labios[0].color}`;
+}
+// Los ojos siguen al cursor (o al dedo) apenas, en todas las ilustraciones.
+function miradaQueSigue() {
+  if (reducido) return;
+  let raf = 0, x = 0, y = 0;
+  const mover = () => {
+    raf = 0;
+    $$('.cara-svg').forEach(svg => {
+      const r = svg.getBoundingClientRect();
+      if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
+      const dx = clamp((x - (r.left + r.width / 2)) / (r.width * 1.2), -1, 1);
+      const dy = clamp((y - (r.top + r.height * .42)) / (r.height * 1.2), -1, 1);
+      svg.style.setProperty('--ox', (dx * 3.6).toFixed(2) + 'px');
+      svg.style.setProperty('--oy', (dy * 2.2).toFixed(2) + 'px');
+    });
+  };
+  addEventListener('pointermove', e => { x = e.clientX; y = e.clientY; if (!raf) raf = requestAnimationFrame(mover); }, { passive: true });
 }
 function medioHTML(a) {
   if (a.video) return `<div class="medio"><video muted playsinline preload="auto" ${a.foto ? `poster="${a.foto}"` : ''} src="${a.video}"></video></div>`;
   if (a.foto) return `<div class="medio"><img src="${a.foto}" alt="" draggable="false"></div>`;
-  return `<div class="medio">${siluetaSVG(a)}</div>`;
+  return `<div class="medio">${caraSVG(estiloAvatar(a))}</div>`;
 }
 
 /* ============ WHATSAPP ============ */
@@ -172,7 +257,7 @@ function armarCinta() {
 function montarAvatar() {
   const a = estado.avatar;
   const stage = $('#arcoStage');
-  stage.innerHTML = medioHTML(a) + ((a.foto || a.video) ? '' : '<p class="etiqueta-ph">Avatar de prueba</p>');
+  stage.innerHTML = medioHTML(a);
   stage.style.setProperty('--ry', '0deg'); stage.style.setProperty('--rx', '0deg');
 }
 function movimientoAvatar() {
@@ -245,27 +330,6 @@ function mostrarResultado(e) {
 
 /* ============ ASÍ SE ARMA TU LOOK ============ */
 // La cara queda quieta; lo que cambia son los colores que elige cada novia.
-function caraSVG() {
-  return `<svg class="cara-svg" viewBox="0 0 400 500" role="img" aria-label="Ilustración de una cara con los colores que elegiste">
-    <rect width="400" height="500" fill="#F3EAE5"/>
-    <ellipse cx="200" cy="215" rx="98" ry="122" style="fill:var(--c-pelo)"/>
-    <g style="fill:var(--c-piel)">
-      <path d="M70 500c0-95 55-135 130-135s130 40 130 135z"/>
-      <rect x="170" y="300" width="60" height="80"/>
-      <ellipse cx="200" cy="225" rx="70" ry="90"/>
-    </g>
-    <g style="fill:var(--c-ojos)" opacity=".8">
-      <ellipse cx="170" cy="199" rx="19" ry="10"/><ellipse cx="230" cy="199" rx="19" ry="10"/>
-    </g>
-    <ellipse cx="170" cy="205" rx="10" ry="5" fill="#fff"/><ellipse cx="230" cy="205" rx="10" ry="5" fill="#fff"/>
-    <circle cx="170" cy="205" r="3.5" fill="#3a2a22"/><circle cx="230" cy="205" r="3.5" fill="#3a2a22"/>
-    <path d="M152 172q16-10 34-2M214 170q18-8 34 2" style="stroke:var(--c-cejas)" stroke-width="6" fill="none" stroke-linecap="round"/>
-    <g style="fill:var(--c-mejillas)" opacity=".55">
-      <ellipse cx="150" cy="245" rx="17" ry="12"/><ellipse cx="250" cy="245" rx="17" ry="12"/>
-    </g>
-    <path d="M178 272q11-8 22-2q11-6 22 2q-11 13-22 13q-11 0-22-13z" style="fill:var(--c-labios)"/>
-  </svg>`;
-}
 function cercano(lista, hex) {
   const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
   const [r, g, b] = rgb(hex);
@@ -564,5 +628,6 @@ revelado();
 cursorAro();
 botonesMagneticos();
 iniciarArmado();
+miradaQueSigue();
 introCarga();
 })();

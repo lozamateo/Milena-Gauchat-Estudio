@@ -116,6 +116,9 @@ button.enlace{background:none;border-top:0;border-left:0;border-right:0;color:va
 .cara{width:min(360px,74vw);aspect-ratio:4/5}
 .cara-svg{width:100%;height:100%}
 .cara-svg *{transition:fill .4s ease,stroke .4s ease}
+.cara-svg .iris{transform:translate(var(--ox,0px),var(--oy,0px));transition:transform .25s ease-out}
+.cara-svg .parpado{transform-box:fill-box;transform-origin:center;animation:parpadeo 5.5s infinite}
+@keyframes parpadeo{0%,94%,100%{transform:scaleY(1)}96.5%{transform:scaleY(.08)}}
 
 /* portfolio */
 .ocasiones{display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:1.4rem}
@@ -228,5 +231,6 @@ button.enlace{background:none;border-top:0;border-left:0;border-right:0;color:va
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .cinta__pista{animation:none}
+  .cara-svg .parpado{animation:none}
   *{transition-duration:.01ms !important}
 }
