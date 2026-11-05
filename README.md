@@ -13,6 +13,8 @@ Hecho con HTML, CSS y JavaScript simples, más GSAP y ScrollTrigger desde cdnjs.
 ## Ya cargado
 
 - WhatsApp de Milena: `5493624240260` (el de su bio de Instagram), en la constante `WA_NUMERO` de `app.js`.
+- Retrato de Milena: `img/milena.jpg`, en la constante `RETRATO` de `app.js`.
+- Portfolio: 11 fotos en `img/portfolio/`, en el arreglo `TRABAJOS` de `app.js`. Cada trabajo tiene solo `tipo` (estilo) y `archivo`: no se muestran nombres, edades ni eventos. Falta alguna foto de Piel mate (elegante).
 - Logo MG: `img/logo-mg.png` (sacado de su perfil, 150 px). Conviene pedirle el archivo original en alta calidad y reemplazarlo con el mismo nombre.
 
 ## Qué falta completar (todo en `app.js`)
@@ -20,8 +22,6 @@ Hecho con HTML, CSS y JavaScript simples, más GSAP y ScrollTrigger desde cdnjs.
 | Qué | Dónde |
 | --- | --- |
 | Fotos o clips de los avatares | arreglo `AVATARES`, campos `foto` y `video` |
-| Fotos del portfolio, nombres y años | arreglo `TRABAJOS`, campos `archivo`, `nombre` y `anio` |
-| Retrato de Milena | constante `RETRATO` |
 | Confirmar con Milena los 5 tipos de novia | arreglo `ESTILOS` |
 | Reemplazar los textos de ejemplo de Consejos | arreglo `ARTICULOS` |
 
