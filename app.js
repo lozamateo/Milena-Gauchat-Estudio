@@ -32,34 +32,21 @@ const ESTILOS = [
 ];
 
 const LOOK_POR_TIPO = Object.fromEntries(ESTILOS.map(e => [e.clave, e.look]));
-const OCASION_TXT = { quince: '15 años', egreso: 'Egreso' };
 
-/* Portfolio: reemplazá archivo (por ejemplo 'img/novia-01.jpg'), nombre y anio de cada trabajo real. */
+/* Portfolio: trabajos reales de Milena. tipo = estilo del look; archivo = foto en img/portfolio/.
+   Para sumar una foto, agregá una línea con su tipo y su archivo. */
 const TRABAJOS = [
-  { ocasion: 'novias', tipo: 'natural',   nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'natural',   nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'natural',   nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'romantica', nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'romantica', nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'romantica', nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'audaz',     nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'audaz',     nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'elegante',  nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'elegante',  nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'boho',      nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'novias', tipo: 'boho',      nombre: 'Nombre de la novia', archivo: null, anio: null },
-  { ocasion: 'quince', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'quince', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'quince', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'quince', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'quince', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'quince', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'egreso', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'egreso', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'egreso', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'egreso', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'egreso', nombre: 'Nombre', archivo: null, anio: null },
-  { ocasion: 'egreso', nombre: 'Nombre', archivo: null, anio: null }
+  { tipo: 'natural',   archivo: 'img/portfolio/natural-01.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-01.jpg' },
+  { tipo: 'audaz',     archivo: 'img/portfolio/audaz-01.jpg' },
+  { tipo: 'boho',      archivo: 'img/portfolio/boho-01.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-02.jpg' },
+  { tipo: 'natural',   archivo: 'img/portfolio/natural-02.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-03.jpg' },
+  { tipo: 'audaz',     archivo: 'img/portfolio/audaz-02.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-04.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-05.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-06.jpg' }
 ];
 
 /* Retrato de Milena: poné la ruta de la foto, por ejemplo 'img/milena.jpg'. */
@@ -123,7 +110,7 @@ const PARTES = ['piel', 'cejas', 'ojos', 'mejillas', 'labios'];
 const PARTE_TXT = { piel: 'piel', cejas: 'cejas', ojos: 'sombras', mejillas: 'rubor', labios: 'labios' };
 const LOOK_INICIAL = { ojos: 0, mejillas: 1, labios: 0 };
 
-const estado = { avatar: AVATARES[0], estilo: null, ocasion: 'novias', tipo: 'todas', look: {}, tocadas: new Set() };
+const estado = { avatar: AVATARES[0], estilo: null, tipo: 'todas', look: {}, tocadas: new Set() };
 
 // Ilustración de la novia. Los colores vienen de variables CSS (--c-piel, --c-labios, etc.),
 // así la misma cara sirve para la portada y para "Así se arma tu look".
@@ -397,41 +384,32 @@ function iniciarArmado() {
 
 /* ============ PORTFOLIO ============ */
 function renderGaleria() {
-  const g = $('#galeria');
-  const lista = TRABAJOS.filter(t => t.ocasion === estado.ocasion && (estado.ocasion !== 'novias' || estado.tipo === 'todas' || t.tipo === estado.tipo));
+  const g = $('#galeria'), vacio = $('#galeriaVacia');
+  const lista = TRABAJOS.filter(t => estado.tipo === 'todas' || t.tipo === estado.tipo);
   g.innerHTML = '';
+  vacio.hidden = lista.length > 0;
   lista.forEach(t => {
+    const look = LOOK_POR_TIPO[t.tipo] || '';
     const f = document.createElement('figure');
     f.className = 'marco';
     const caja = document.createElement('div'); caja.className = 'marco__caja';
     const img = document.createElement('div'); img.className = 'marco__img';
-    if (t.archivo) { const i = document.createElement('img'); i.src = t.archivo; i.alt = `Maquillaje de ${t.nombre}`; i.loading = 'lazy'; img.append(i); }
-    else { const s = document.createElement('span'); s.textContent = 'foto de Milena'; img.append(s); }
-    caja.append(img);
+    const i = document.createElement('img');
+    i.src = t.archivo; i.alt = `Maquillaje ${look} hecho por Milena Gauchat`; i.loading = 'lazy';
+    i.width = 640; i.height = 800;
+    img.append(i); caja.append(img);
     const cap = document.createElement('figcaption');
-    const n = document.createElement('strong'); n.textContent = t.nombre;
-    const l = document.createElement('span');
-    const etiqueta = t.ocasion === 'novias' ? (LOOK_POR_TIPO[t.tipo] || '') : OCASION_TXT[t.ocasion];
-    l.textContent = etiqueta + (t.anio ? `, ${t.anio}` : '');
-    cap.append(n, l);
+    const l = document.createElement('span'); l.textContent = look;
+    cap.append(l);
     f.append(caja, cap);
     g.append(f);
   });
 }
 function iniciarPortfolio() {
-  const tabs = $$('#ocasiones button'), filtros = $$('#filtro button');
-  tabs.forEach(b => b.addEventListener('click', () => {
-    estado.ocasion = b.dataset.ocasion;
-    tabs.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-    $('#filtro').hidden = estado.ocasion !== 'novias';
-    renderGaleria();
-  }));
+  const filtros = $$('#filtro button');
   filtros.forEach(b => b.addEventListener('click', () => fijarTipo(b.dataset.tipo)));
   $('#resVer').addEventListener('click', e => {
     e.preventDefault();
-    estado.ocasion = 'novias';
-    tabs.forEach(x => x.setAttribute('aria-pressed', String(x.dataset.ocasion === 'novias')));
-    $('#filtro').hidden = false;
     fijarTipo(estado.estilo ? estado.estilo.clave : 'todas');
     $('#portfolio').scrollIntoView({ behavior: reducido ? 'auto' : 'smooth' });
   });
