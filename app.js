@@ -63,7 +63,7 @@ const TRABAJOS = [
 ];
 
 /* Retrato de Milena: poné la ruta de la foto, por ejemplo 'img/milena.jpg'. */
-const RETRATO = null;
+const RETRATO = 'img/milena.jpg';
 
 /* Consejos (blog). Textos de ejemplo para que Milena los reemplace. */
 const ARTICULOS = [
