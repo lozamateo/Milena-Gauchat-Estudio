@@ -27,9 +27,13 @@ Hecho con HTML, CSS y JavaScript simples, más GSAP y ScrollTrigger desde cdnjs.
 
 Las imágenes van en una carpeta `img/` y se referencian así: `'img/novia-01.jpg'`.
 
+### Portada
+
+En el arco de la portada pasan solas fotos reales del portfolio (arreglo `PORTADA` en `app.js`), una cada 4 segundos. Para cambiar cuáles aparecen, editá ese arreglo con archivos de `img/portfolio/`.
+
 ### Avatares
 
-Cada avatar es un clip corto (6 a 8 s) de una modelo girando la cabeza de un leve tres cuartos izquierdo a un leve tres cuartos derecho, con cámara fija, fondo liso claro y formato 4:5. El mouse (o el dedo) recorre el clip. Mientras no haya clips, se muestra una silueta de prueba.
+Los avatares de "¿A quién te parecés?" definen los colores iniciales de la ilustración de "Así se arma tu look".
 
 ### Capas de "Así se arma tu look"
 

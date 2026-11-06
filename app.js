@@ -201,11 +201,6 @@ function caraSVG(estilo = '') {
     <path d="M160 122Q192 108 232 116" stroke="#fff" stroke-opacity=".18" stroke-width="5" fill="none" stroke-linecap="round"/>
   </svg>`;
 }
-// Colores con los que arranca la ilustración de la portada para cada avatar.
-function estiloAvatar(a) {
-  return `--c-piel:${a.piel};--c-pelo:${a.pelo};--c-cejas:${PALETAS.cejas[cercano(PALETAS.cejas, a.pelo)].color};` +
-    `--c-ojos:${PALETAS.ojos[0].color};--c-mejillas:${PALETAS.mejillas[1].color};--c-labios:${PALETAS.labios[0].color}`;
-}
 // Los ojos siguen al cursor (o al dedo) apenas, en todas las ilustraciones.
 function miradaQueSigue() {
   if (reducido) return;
@@ -223,12 +218,6 @@ function miradaQueSigue() {
   };
   addEventListener('pointermove', e => { x = e.clientX; y = e.clientY; if (!raf) raf = requestAnimationFrame(mover); }, { passive: true });
 }
-function medioHTML(a) {
-  if (a.video) return `<div class="medio"><video muted playsinline preload="auto" ${a.foto ? `poster="${a.foto}"` : ''} src="${a.video}"></video></div>`;
-  if (a.foto) return `<div class="medio"><img src="${a.foto}" alt="" draggable="false"></div>`;
-  return `<div class="medio">${caraSVG(estiloAvatar(a))}</div>`;
-}
-
 /* ============ WHATSAPP ============ */
 function resumenColores() {
   const elegidas = PARTES.filter(p => estado.tocadas.has(p));
@@ -252,31 +241,47 @@ function armarCinta() {
   $('#cintaPista').innerHTML = una.repeat(8);
 }
 
-/* ============ AVATAR DE LA PORTADA ============ */
-function montarAvatar() {
-  const a = estado.avatar;
-  const stage = $('#arcoStage');
-  stage.innerHTML = medioHTML(a);
-  stage.style.setProperty('--ry', '0deg'); stage.style.setProperty('--rx', '0deg');
-}
-function movimientoAvatar() {
-  const stage = $('#arcoStage');
-  let raf = 0, punto = null;
-  const aplicar = () => {
-    raf = 0;
-    const r = stage.getBoundingClientRect();
-    const px = clamp((punto.x - r.left) / r.width, 0, 1);
-    const py = clamp((punto.y - r.top) / r.height, 0, 1);
-    const v = $('video', stage);
-    if (v && v.duration) { v.currentTime = px * v.duration; return; }
-    if (reducido) return;
-    stage.style.setProperty('--lx', (px * 100).toFixed(1) + '%');
-    stage.style.setProperty('--ly', (py * 100).toFixed(1) + '%');
-  };
-  stage.addEventListener('pointermove', e => { punto = { x: e.clientX, y: e.clientY }; if (!raf) raf = requestAnimationFrame(aplicar); });
-  stage.addEventListener('pointerleave', () => {
-    stage.style.setProperty('--lx', '50%'); stage.style.setProperty('--ly', '35%');
+/* ============ FOTOS DE LA PORTADA ============ */
+// Trabajos reales que pasan solos dentro del arco, uno de cada estilo.
+const PORTADA = [
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-12.jpg' },
+  { tipo: 'audaz',     archivo: 'img/portfolio/audaz-01.jpg' },
+  { tipo: 'natural',   archivo: 'img/portfolio/natural-03.jpg' },
+  { tipo: 'elegante',  archivo: 'img/portfolio/elegante-01.jpg' },
+  { tipo: 'boho',      archivo: 'img/portfolio/boho-01.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-06.jpg' }
+];
+const PORTADA_MS = 4000;
+function iniciarPortada() {
+  const stage = $('#arcoStage'), cap = $('#arcoLook');
+  PORTADA.forEach((t, i) => {
+    const img = document.createElement('img');
+    img.src = t.archivo;
+    img.alt = i === 0 ? `Maquillaje ${LOOK_POR_TIPO[t.tipo]} hecho por Milena Gauchat` : '';
+    img.width = 640; img.height = 800;
+    img.decoding = 'async';
+    if (i > 0) img.loading = 'lazy';
+    img.className = 'portada__foto' + (i === 0 ? ' activa' : '');
+    stage.append(img);
   });
+  const fotos = $$('.portada__foto', stage);
+  let actual = 0, timer = 0;
+  const mostrar = i => {
+    fotos[actual].classList.remove('activa');
+    fotos[actual].alt = '';
+    actual = i;
+    fotos[actual].classList.add('activa');
+    fotos[actual].alt = `Maquillaje ${LOOK_POR_TIPO[PORTADA[actual].tipo]} hecho por Milena Gauchat`;
+    cap.textContent = LOOK_POR_TIPO[PORTADA[actual].tipo];
+  };
+  cap.textContent = LOOK_POR_TIPO[PORTADA[0].tipo];
+  if (reducido || fotos.length < 2) return;
+  const seguir = () => { clearInterval(timer); timer = setInterval(() => mostrar((actual + 1) % fotos.length), PORTADA_MS); };
+  const parar = () => clearInterval(timer);
+  stage.addEventListener('pointerenter', parar);
+  stage.addEventListener('pointerleave', seguir);
+  document.addEventListener('visibilitychange', () => (document.hidden ? parar() : seguir()));
+  seguir();
 }
 
 /* ============ TU ESTILO ============ */
@@ -291,7 +296,7 @@ function renderAvatares() {
     b.addEventListener('click', () => {
       estado.avatar = a;
       $$('.ficha', cont).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-      montarAvatar(); montarArmado(); actualizarWA();
+      montarArmado(); actualizarWA();
     });
     cont.append(b);
   });
@@ -616,8 +621,7 @@ function introCarga() {
 
 /* ============ ARRANQUE ============ */
 armarCinta();
-montarAvatar();
-movimientoAvatar();
+iniciarPortada();
 renderAvatares();
 renderEstilos();
 iniciarPortfolio();
