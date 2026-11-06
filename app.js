@@ -44,9 +44,11 @@ const TRABAJOS = [
   { tipo: 'natural',   archivo: 'img/portfolio/natural-02.jpg' },
   { tipo: 'romantica', archivo: 'img/portfolio/romantica-03.jpg' },
   { tipo: 'audaz',     archivo: 'img/portfolio/audaz-02.jpg' },
+  { tipo: 'natural',   archivo: 'img/portfolio/natural-03.jpg' },
   { tipo: 'romantica', archivo: 'img/portfolio/romantica-04.jpg' },
   { tipo: 'romantica', archivo: 'img/portfolio/romantica-05.jpg' },
-  { tipo: 'romantica', archivo: 'img/portfolio/romantica-06.jpg' }
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-06.jpg' },
+  { tipo: 'natural',   archivo: 'img/portfolio/natural-04.jpg' }
 ];
 
 /* Retrato de Milena: poné la ruta de la foto, por ejemplo 'img/milena.jpg'. */
