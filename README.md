@@ -14,7 +14,7 @@ Hecho con HTML, CSS y JavaScript simples, más GSAP y ScrollTrigger desde cdnjs.
 
 - WhatsApp de Milena: `5493624240260` (el de su bio de Instagram), en la constante `WA_NUMERO` de `app.js`.
 - Retrato de Milena: `img/milena.jpg`, en la constante `RETRATO` de `app.js`.
-- Portfolio: 18 fotos en `img/portfolio/`, en el arreglo `TRABAJOS` de `app.js`. Cada trabajo tiene solo `tipo` (estilo) y `archivo`: no se muestran nombres, edades ni eventos. Falta alguna foto de Piel mate (elegante).
+- Portfolio: 21 fotos en `img/portfolio/`, en el arreglo `TRABAJOS` de `app.js`. Cada trabajo tiene solo `tipo` (estilo) y `archivo`: no se muestran nombres, edades ni eventos.
 - Logo MG: `img/logo-mg.png` (sacado de su perfil, 150 px). Conviene pedirle el archivo original en alta calidad y reemplazarlo con el mismo nombre.
 
 ## Qué falta completar (todo en `app.js`)
