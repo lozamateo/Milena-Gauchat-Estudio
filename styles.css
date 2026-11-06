@@ -50,13 +50,13 @@ ul,ol{margin:0;padding:0;list-style:none}
 .hero-word{display:inline-block}
 .hero__bajada{font-size:1.1rem;max-width:32ch;margin-bottom:2rem}
 .hero__avatar{display:flex;justify-content:center}
-.arco{position:relative;width:min(380px,78vw);margin:0 18px 18px 0}
-.arco::before{content:"";position:absolute;inset:0;transform:translate(18px,18px);border:1px solid var(--ciruela);border-radius:999px 999px 0 0}
-.arco-forma{position:relative;aspect-ratio:4/5;border-radius:999px 999px 0 0;overflow:hidden;background:var(--superficie);touch-action:pan-y;--rx:0deg;--ry:0deg;--lx:50%;--ly:35%}
-.arco-forma .medio{position:absolute;inset:0}
-.arco-forma::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--lx) var(--ly),rgba(255,255,255,.35),transparent 45%);pointer-events:none}
-.medio img,.medio video,.medio svg{width:100%;height:100%;object-fit:cover}
-.etiqueta-ph{position:absolute;left:0;right:0;bottom:12%;text-align:center;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ciruela);z-index:2;margin:0}
+.arco{position:relative;width:min(380px,78vw);margin:0 18px 0 0}
+.arco::before{content:"";position:absolute;top:0;left:0;width:100%;aspect-ratio:4/5;transform:translate(18px,18px);border:1px solid var(--ciruela);border-radius:999px 999px 0 0}
+.arco-forma{position:relative;aspect-ratio:4/5;border-radius:999px 999px 0 0;overflow:hidden;background:var(--superficie)}
+.portada__foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity 1.2s ease,transform 5.5s ease-out}
+.portada__foto.activa{opacity:1;transform:scale(1)}
+.arco__pie{position:relative;margin:2rem 0 0;font-size:.66rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,9,20,.55)}
+.arco__pie span{color:var(--frambuesa)}
 
 /* cinta */
 .cinta{background:var(--ciruela);color:#fff;overflow:hidden;padding:1rem 0}
@@ -245,5 +245,6 @@ button.enlace{background:none;border-top:0;border-left:0;border-right:0;color:va
   html{scroll-behavior:auto}
   .cinta__pista{animation:none}
   .cara-svg .parpado{animation:none}
+  .portada__foto{transform:none}
   *{transition-duration:.01ms !important}
 }
