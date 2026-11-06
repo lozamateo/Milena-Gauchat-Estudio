@@ -36,17 +36,29 @@ const LOOK_POR_TIPO = Object.fromEntries(ESTILOS.map(e => [e.clave, e.look]));
 /* Portfolio: trabajos reales de Milena. tipo = estilo del look; archivo = foto en img/portfolio/.
    Para sumar una foto, agregá una línea con su tipo y su archivo. */
 const TRABAJOS = [
-  { tipo: 'natural',   archivo: 'img/portfolio/natural-01.jpg' },
   { tipo: 'romantica', archivo: 'img/portfolio/romantica-01.jpg' },
-  { tipo: 'audaz',     archivo: 'img/portfolio/audaz-01.jpg' },
-  { tipo: 'boho',      archivo: 'img/portfolio/boho-01.jpg' },
+  { tipo: 'natural',   archivo: 'img/portfolio/natural-01.jpg' },
   { tipo: 'romantica', archivo: 'img/portfolio/romantica-02.jpg' },
-  { tipo: 'natural',   archivo: 'img/portfolio/natural-02.jpg' },
+  { tipo: 'audaz',     archivo: 'img/portfolio/audaz-01.jpg' },
   { tipo: 'romantica', archivo: 'img/portfolio/romantica-03.jpg' },
-  { tipo: 'audaz',     archivo: 'img/portfolio/audaz-02.jpg' },
+  { tipo: 'elegante',  archivo: 'img/portfolio/elegante-01.jpg' },
   { tipo: 'romantica', archivo: 'img/portfolio/romantica-04.jpg' },
+  { tipo: 'boho',      archivo: 'img/portfolio/boho-01.jpg' },
   { tipo: 'romantica', archivo: 'img/portfolio/romantica-05.jpg' },
-  { tipo: 'romantica', archivo: 'img/portfolio/romantica-06.jpg' }
+  { tipo: 'natural',   archivo: 'img/portfolio/natural-02.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-06.jpg' },
+  { tipo: 'audaz',     archivo: 'img/portfolio/audaz-02.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-08.jpg' },
+  { tipo: 'elegante',  archivo: 'img/portfolio/elegante-02.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-09.jpg' },
+  { tipo: 'boho',      archivo: 'img/portfolio/boho-02.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-10.jpg' },
+  { tipo: 'natural',   archivo: 'img/portfolio/natural-03.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-11.jpg' },
+  { tipo: 'audaz',     archivo: 'img/portfolio/audaz-03.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-12.jpg' },
+  { tipo: 'natural',   archivo: 'img/portfolio/natural-04.jpg' },
+  { tipo: 'romantica', archivo: 'img/portfolio/romantica-13.jpg' }
 ];
 
 /* Retrato de Milena: poné la ruta de la foto, por ejemplo 'img/milena.jpg'. */
