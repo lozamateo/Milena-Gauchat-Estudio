@@ -251,7 +251,7 @@ const PORTADA = [
   { tipo: 'boho',      archivo: 'img/portfolio/boho-01.jpg' },
   { tipo: 'romantica', archivo: 'img/portfolio/romantica-06.jpg' }
 ];
-const PORTADA_MS = 4000;
+const PORTADA_MS = 2000;
 function iniciarPortada() {
   const stage = $('#arcoStage'), cap = $('#arcoLook');
   PORTADA.forEach((t, i) => {

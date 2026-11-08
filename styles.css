@@ -53,7 +53,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .arco{position:relative;width:min(380px,78vw);margin:0 18px 0 0}
 .arco::before{content:"";position:absolute;top:0;left:0;width:100%;aspect-ratio:4/5;transform:translate(18px,18px);border:1px solid var(--ciruela);border-radius:999px 999px 0 0}
 .arco-forma{position:relative;aspect-ratio:4/5;border-radius:999px 999px 0 0;overflow:hidden;background:var(--superficie)}
-.portada__foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity 1.2s ease,transform 5.5s ease-out}
+.portada__foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .7s ease,transform 2.8s ease-out}
 .portada__foto.activa{opacity:1;transform:scale(1)}
 .arco__pie{position:relative;margin:2rem 0 0;font-size:.66rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(0,9,20,.55)}
 .arco__pie span{color:var(--frambuesa)}
@@ -200,9 +200,6 @@ button.enlace{background:none;border-top:0;border-left:0;border-right:0;color:va
 
 .pie{padding:1.8rem 1rem;text-align:center;font-size:.76rem;border-top:1px solid var(--linea)}
 .pie p{margin:0}
-.credito{max-width:40rem;margin:1.4rem auto 0;padding-top:1.2rem;border-top:1px solid var(--linea);font-size:.72rem;line-height:1.6;color:rgba(0,9,20,.6)}
-.credito a{padding:.8rem .2rem;color:var(--texto);font-weight:500;text-decoration:underline;text-decoration-color:var(--empolvado);text-underline-offset:3px;transition:color .2s}
-.credito a:hover{color:var(--ciruela);text-decoration-color:var(--ciruela)}
 
 /* progreso y cursor */
 .progreso{position:fixed;top:0;left:0;right:0;height:3px;background:var(--ciruela);transform:scaleX(0);transform-origin:left;z-index:100}
