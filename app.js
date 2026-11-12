@@ -6,7 +6,7 @@ const WA_NUMERO = '5493624240260'; // WhatsApp de Milena (el de su bio de Instag
 
 // Reseñas: con url y anonKey vacíos se guardan solo en el navegador (modo prueba).
 // Para guardarlas de verdad, completá estos datos de Supabase (ver README).
-const RESENAS_BACKEND = { url: '', anonKey: '', tabla: 'resenas' };
+const RESENAS_BACKEND = { url: 'https://fhhqziwtnjvjnnwbxged.supabase.co', anonKey: 'sb_publishable_ZMH0F6m53-0lljID2nXPpA_qX-3INRF', tabla: 'resenas' };
 
 /* Avatares: foto = imagen quieta (4:5), video = clip de 6 a 8 s girando la cabeza. */
 const AVATARES = [
@@ -483,7 +483,13 @@ function montarRetrato() {
 /* ============ RESEÑAS ============ */
 const CLAVE_LOCAL = 'mg_resenas';
 const remoto = () => !!(RESENAS_BACKEND.url && RESENAS_BACKEND.anonKey);
-const cabeceras = () => ({ apikey: RESENAS_BACKEND.anonKey, Authorization: `Bearer ${RESENAS_BACKEND.anonKey}`, 'Content-Type': 'application/json' });
+// Las claves nuevas (sb_publishable_...) van solo en "apikey"; las viejas (eyJ...) también como Bearer.
+const cabeceras = () => {
+  const k = RESENAS_BACKEND.anonKey;
+  const h = { apikey: k, 'Content-Type': 'application/json' };
+  if (!k.startsWith('sb_')) h.Authorization = `Bearer ${k}`;
+  return h;
+};
 
 async function leerResenas() {
   if (remoto()) {
@@ -547,16 +553,21 @@ function iniciarResenas() {
     const comentario = $('#resTexto').value.trim();
     const sel = form.querySelector('input[name="estrellas"]:checked');
     msg.classList.add('error');
-    if (!nombre) { msg.textContent = 'Escribí tu nombre.'; $('#resNombre').focus(); return; }
+    // Campo trampa: las personas no lo ven; si viene completo, es un robot.
+    if ($('#resSitio').value) { form.reset(); msg.classList.remove('error'); msg.textContent = 'Gracias por tu reseña.'; return; }
+    if (nombre.length < 2) { msg.textContent = 'Escribí tu nombre.'; $('#resNombre').focus(); return; }
     if (!sel) { msg.textContent = 'Elegí cuántas estrellas le das.'; return; }
-    if (!comentario) { msg.textContent = 'Contanos cómo fue tu experiencia.'; $('#resTexto').focus(); return; }
+    if (comentario.length < 5) { msg.textContent = 'Contanos un poco más cómo fue tu experiencia.'; $('#resTexto').focus(); return; }
+    const boton = form.querySelector('button[type="submit"]');
+    boton.disabled = true;
     try {
       await guardarResena({ nombre: nombre.slice(0, 60), estrellas: Number(sel.value), comentario: comentario.slice(0, 500) });
       form.reset();
       msg.classList.remove('error');
-      msg.textContent = remoto() ? 'Gracias. Tu reseña se publica cuando Milena la apruebe.' : 'Gracias por tu reseña.';
+      msg.textContent = '¡Gracias! Tu reseña ya está publicada.';
       pintarResenas();
     } catch { msg.textContent = 'No pudimos enviar tu reseña. Probá de nuevo en un rato.'; }
+    finally { boton.disabled = false; }
   });
   pintarResenas();
 }
