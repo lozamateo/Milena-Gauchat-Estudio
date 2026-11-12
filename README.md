@@ -41,26 +41,15 @@ Las capas se recortan de la misma foto con máscaras en `styles.css` (`.capa--pi
 
 ## Reseñas
 
-Mientras `RESENAS_BACKEND` esté vacío, las reseñas se guardan solo en el navegador de quien las escribe (modo prueba). Para que se guarden de verdad y las vea todo el mundo hay que conectar una base de datos. Con [Supabase](https://supabase.com) (plan gratis):
+Las reseñas se guardan en Supabase (proyecto `Milena-Gauchat-Estudio`) y se publican solas, sin aprobación.
 
-1. Crear un proyecto y, en el editor SQL, ejecutar:
+- **Tabla:** se crea una sola vez con [`sql/resenas.sql`](sql/resenas.sql) (Supabase → SQL Editor → pegar → Run).
+- **Conexión:** URL y clave pública (`anon` / publishable) en `RESENAS_BACKEND`, dentro de `app.js`. Esa clave es pública por diseño: la seguridad la dan las políticas de la tabla.
+- **Moderar:** en Supabase → Table Editor → `resenas`, borrá la fila o poné `aprobada` en `false` para ocultarla.
+- **Spam:** el formulario tiene un campo trampa oculto y límites de largo, también controlados por la base de datos.
+- **Que no se pause:** el plan gratis de Supabase pausa los proyectos sin actividad. La tarea automática `.github/workflows/supabase-activa.yml` consulta la base de datos cada dos días para mantenerla despierta. GitHub desactiva las tareas programadas si el repositorio pasa 60 días sin cambios: con las actualizaciones de fotos alcanza, y si llega un mail de aviso de GitHub, se reactiva con un clic en la pestaña Actions.
 
-```sql
-create table resenas (
-  id bigint generated always as identity primary key,
-  nombre text not null check (char_length(nombre) <= 60),
-  estrellas int not null check (estrellas between 1 and 5),
-  comentario text not null check (char_length(comentario) <= 500),
-  aprobada boolean not null default false,
-  creada timestamptz not null default now()
-);
-alter table resenas enable row level security;
-create policy "leer aprobadas" on resenas for select using (aprobada);
-create policy "enviar" on resenas for insert with check (aprobada = false);
-```
-
-2. Copiar la URL del proyecto y la clave `anon` en `RESENAS_BACKEND` dentro de `app.js`. Esa clave es pública por diseño: la seguridad la dan las políticas de arriba.
-3. Las reseñas nuevas quedan ocultas hasta que Milena las apruebe (cambiando `aprobada` a verdadero en el panel de Supabase).
+Mientras `anonKey` esté vacía, las reseñas se guardan solo en el navegador de quien las escribe (modo prueba).
 
 ## Publicar en GitHub Pages
 

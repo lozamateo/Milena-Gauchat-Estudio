@@ -214,6 +214,10 @@
           <span>Tu experiencia</span>
           <textarea id="resTexto" name="comentario" rows="4" maxlength="500" required></textarea>
         </label>
+        <div class="trampa" aria-hidden="true">
+          <label for="resSitio">No completes este campo</label>
+          <input type="text" id="resSitio" name="sitio" tabindex="-1" autocomplete="off">
+        </div>
         <button class="btn" type="submit">Enviar reseña</button>
         <p class="form__msg" id="formMsg" role="status"></p>
       </form>

@@ -183,6 +183,7 @@ button.enlace{background:none;border-top:0;border-left:0;border-right:0;color:va
 .estrellas label{font-size:2rem;line-height:1;color:var(--linea);cursor:pointer;min-width:40px;min-height:40px;display:flex;align-items:center;justify-content:center;transition:color .15s}
 .estrellas input:checked ~ label,.estrellas label:hover,.estrellas label:hover ~ label{color:var(--frambuesa)}
 .estrellas input:focus-visible + label{outline:2px solid var(--ciruela)}
+.trampa{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .form__msg{font-size:.85rem;min-height:1.4em;margin:0}
 .form__msg.error{color:#A32D2D}
 .lista{display:flex;flex-direction:column}
