@@ -1,0 +1,24 @@
+# Mantiene despierta la base de datos de reseñas.
+# El plan gratis de Supabase pausa los proyectos sin actividad; esta tarea
+# hace una consulta cada dos días para que eso no pase. No hay que tocarla.
+# Si alguna vez falla, GitHub manda un mail de aviso.
+name: Mantener Supabase activa
+
+on:
+  schedule:
+    - cron: "17 13 */2 * *"
+  workflow_dispatch:
+
+jobs:
+  despertar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Consultar la tabla de reseñas
+        env:
+          SUPABASE_URL: https://fhhqziwtnjvjnnwbxged.supabase.co
+          SUPABASE_KEY: sb_publishable_ZMH0F6m53-0lljID2nXPpA_qX-3INRF
+        run: |
+          curl -fsS "$SUPABASE_URL/rest/v1/resenas?select=id&limit=1" \
+            -H "apikey: $SUPABASE_KEY"
+          echo
+          echo "Supabase respondió bien."

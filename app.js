@@ -6,7 +6,7 @@ const WA_NUMERO = '5493624240260'; // WhatsApp de Milena (el de su bio de Instag
 
 // Reseñas: con url y anonKey vacíos se guardan solo en el navegador (modo prueba).
 // Para guardarlas de verdad, completá estos datos de Supabase (ver README).
-const RESENAS_BACKEND = { url: 'https://fhhqziwtnjvjnnwbxged.supabase.co', anonKey: '', tabla: 'resenas' };
+const RESENAS_BACKEND = { url: 'https://fhhqziwtnjvjnnwbxged.supabase.co', anonKey: 'sb_publishable_ZMH0F6m53-0lljID2nXPpA_qX-3INRF', tabla: 'resenas' };
 
 /* Avatares: foto = imagen quieta (4:5), video = clip de 6 a 8 s girando la cabeza. */
 const AVATARES = [
@@ -483,7 +483,13 @@ function montarRetrato() {
 /* ============ RESEÑAS ============ */
 const CLAVE_LOCAL = 'mg_resenas';
 const remoto = () => !!(RESENAS_BACKEND.url && RESENAS_BACKEND.anonKey);
-const cabeceras = () => ({ apikey: RESENAS_BACKEND.anonKey, Authorization: `Bearer ${RESENAS_BACKEND.anonKey}`, 'Content-Type': 'application/json' });
+// Las claves nuevas (sb_publishable_...) van solo en "apikey"; las viejas (eyJ...) también como Bearer.
+const cabeceras = () => {
+  const k = RESENAS_BACKEND.anonKey;
+  const h = { apikey: k, 'Content-Type': 'application/json' };
+  if (!k.startsWith('sb_')) h.Authorization = `Bearer ${k}`;
+  return h;
+};
 
 async function leerResenas() {
   if (remoto()) {
