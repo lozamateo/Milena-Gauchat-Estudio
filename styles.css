@@ -200,6 +200,9 @@ button.enlace{background:none;border-top:0;border-left:0;border-right:0;color:va
 
 .pie{padding:1.8rem 1rem;text-align:center;font-size:.76rem;border-top:1px solid var(--linea)}
 .pie p{margin:0}
+.credito{max-width:40rem;margin:1.4rem auto 0;padding-top:1.2rem;border-top:1px solid var(--linea);font-size:.72rem;line-height:1.6;color:rgba(0,9,20,.6)}
+.credito a{padding:.8rem .2rem;color:var(--texto);font-weight:500;text-decoration:underline;text-decoration-color:var(--empolvado);text-underline-offset:3px;transition:color .2s}
+.credito a:hover{color:var(--ciruela);text-decoration-color:var(--ciruela)}
 
 /* progreso y cursor */
 .progreso{position:fixed;top:0;left:0;right:0;height:3px;background:var(--ciruela);transform:scaleX(0);transform-origin:left;z-index:100}
